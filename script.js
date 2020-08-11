@@ -69,14 +69,6 @@ function cellClick(cell) {
     }
   }
 }
-function pausecomp(millis) {
-  var date = new Date();
-  var curDate = null;
-  do {
-    curDate = new Date();
-  } while (curDate - date < millis);
-}
-
 function clearTable() {
   startSet=0;
   endSet=0
@@ -85,7 +77,7 @@ function clearTable() {
 }
 let traverse = [];
 let curr =0;
-function bfs(){
+function BFS(){
   var start = startSet.slice(1, startSet.length - 1);
   var dirs = [
     [-1, 0],
@@ -119,9 +111,8 @@ function bfs(){
       }
       if (cell.attr("class") == "cell end") {
         found = true;
+        break;
       }
-      // console.log(temp[0] + "," + temp[1]);
-      // console.log(seen.indexOf(temp[0] + "," + temp[1]));
       if (seen.indexOf(temp[0] + "," + temp[1]) == -1) {
         seen.push(temp[0] + "," + temp[1]);
         q.push(temp[0] + "," + temp[1]);
@@ -131,12 +122,182 @@ function bfs(){
     }
   }
 }
+
+
+function DFS() {
+  var start = startSet.slice(1, startSet.length - 1);
+  var dirs = [
+    [-1, 0],
+    [0, 1],
+    [1, 0],
+    [0, -1],
+  ];
+  let seen = [start];
+  let st = [start];
+  var found = false;
+
+  while (st.length != 0 && found == false) {
+    let curr = st.pop();
+    var x = curr.split(",")[0];
+    var y = curr.split(",")[1];
+    curr = [Number(x), Number(y)];
+    var i = 0;
+    for (i = 0; i < 4; i++) {
+      var dir = dirs[i];
+      temp = [curr[0] + dir[0], curr[1] + dir[1]];
+      id = "#\\(" + temp[0] + "\\," + temp[1] + "\\)";
+      cell = $(id);
+      if (
+        temp[0] < 0 ||
+        temp[1] < 0 ||
+        temp[0] >= nrows ||
+        temp[1] >= ncols ||
+        cell.attr("class") == "cell wall"
+      ) {
+        continue;
+      }
+      if (seen.indexOf(temp[0] + "," + temp[1]) == -1) {
+        seen.push(temp[0] + "," + temp[1]);
+        st.push(temp[0] + "," + temp[1]);
+        traverse.push(temp[0] + "," + temp[1]);
+        // cell.addClass("seen");
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+function BiBFS() {
+  var start = startSet.slice(1, startSet.length - 1);
+  var end = endSet.slice(1, endSet.length - 1);
+  var dirs = [
+    [-1, 0],
+    [0, 1],
+    [1, 0],
+    [0, -1],
+  ];
+  let seenFromEnd = [end];
+  let seenFromStart = [start];
+
+  let q1 = [start];
+  let q2 = [end];
+  var found = false;
+
+  while (q1.length != 0 && found == false && q2.length != 0) {
+    // alert(traverse);
+    let curr = q1.shift();
+    let x = curr.split(",")[0];
+    let y = curr.split(",")[1];
+    curr = [Number(x), Number(y)];
+    var i = 0;
+    for (i = 0; i < 4; i++) {
+      var dir = dirs[i];
+      temp = [curr[0] + dir[0], curr[1] + dir[1]];
+      id = "#\\(" + temp[0] + "\\," + temp[1] + "\\)";
+      cell = $(id);
+      if (
+        temp[0] < 0 ||
+        temp[1] < 0 ||
+        temp[0] >= nrows ||
+        temp[1] >= ncols ||
+        cell.attr("class") == "cell wall"
+      ) {
+        continue;
+      }
+      if (seenFromStart.indexOf(temp[0] + "," + temp[1]) == -1) {
+        seenFromStart.push(temp[0] + "," + temp[1]);
+        q1.push(temp[0] + "," + temp[1]);
+        traverse.push(temp[0] + "," + temp[1]);
+        // cell.addClass("seen");
+        if (seenFromEnd.indexOf(temp[0] + "," + temp[1]) != -1) {
+          // alert("bingo1");
+          found = true;
+          break;
+        }
+      }
+    }
+
+    curr = q2.shift();
+    x = curr.split(",")[0];
+    y = curr.split(",")[1];
+    curr = [Number(x), Number(y)];
+    i = 0;
+    for (i = 0; i < 4; i++) {
+      let dir = dirs[i];
+      let temp = [curr[0] + dir[0], curr[1] + dir[1]];
+      id = "#\\(" + temp[0] + "\\," + temp[1] + "\\)";
+      cell = $(id);
+      if (
+        temp[0] < 0 ||
+        temp[1] < 0 ||
+        temp[0] >= nrows ||
+        temp[1] >= ncols ||
+        cell.attr("class") == "cell wall"
+      ) {
+        continue;
+      }
+      // if (cell.attr("class") == "cell end") {
+      //   found = true;
+      //   // break;
+      // }
+      if (seenFromEnd.indexOf(temp[0] + "," + temp[1]) == -1) {
+        seenFromEnd.push(temp[0] + "," + temp[1]);
+        q2.push(temp[0] + "," + temp[1]);
+        traverse.push(temp[0] + "," + temp[1]);
+        // cell.addClass("seen");
+        if (seenFromStart.indexOf(temp[0] + "," + temp[1]) != -1) {
+          // alert("bingo2");
+          found = true;
+          break;
+        }
+      }
+    }
+    // alert(q1.length + " " + found + " " + q2.length);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 let id= 0;
 let speed=1;
 function animateTraversal(){
     let curr = traverse.shift();
     // console.log(curr, traverse.length);
     if(traverse.length==0){
+      // alert("bingo");
       clearInterval(id);
     }
     var x = curr.split(",")[0];
@@ -149,7 +310,17 @@ function animateTraversal(){
 
 
 }
+
+
+
+
+
+
+
+
 function visualize() {
-  bfs();
+  traverse = [];
+  BiBFS();
+  console.log(traverse);
   id = setInterval(animateTraversal, speed); 
 }
