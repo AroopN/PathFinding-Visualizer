@@ -9,7 +9,14 @@
     <body onload="loadTable()">
         <div id="main"></div>
         <div id ="button-container">
-            <button id = "vButton" onclick="visualize();">Visualize</button>
+            <div class="dropdown">
+                <button onclick="myFunction()" class="dropbtn">Visualize</button>
+                <div id="myDropdown" class="dropdown-content">
+                    <button onclick="visualize('BFS');">BFS</a>
+                    <button onclick="visualize('DFS');">DFS</a>
+                    <button onclick="visualize('Bi-BFS');">Bi-BFS</a>
+                </div>
+            </div>
             <button id="clearTable" onclick="clearTable();">Clear</button>
         </div>
     </body>
