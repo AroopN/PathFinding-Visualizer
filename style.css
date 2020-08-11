@@ -1,0 +1,55 @@
+.cell {
+    width: 10px;
+    height: 10px;
+    border: 1px solid black;
+    padding: 0;
+    float: left;
+    /* fix for  buggy browsers */
+    display: table-column;
+    /* width: 200px; */
+    /* background-color: #ccc; */
+}
+
+.table-row {
+    display: table-row;
+}
+
+#main {
+    margin: auto;
+    display: table;
+    width: auto;
+    background-color: #eee;
+    border: 1px solid #ff0000;
+    /* border-spacing: 5px; */
+    /* cellspacing:poor IE support for  this */
+}
+
+#button-container {
+    text-align: center;
+}
+
+#vButton {
+    width: 100px;
+    height: 30px;
+}
+
+#clearTable {
+    width: 100px;
+    height: 30px;
+}
+
+.wall {
+    background-color: black;
+}
+
+.seen {
+    background-color: cyan;
+}
+
+.end {
+    background-color: green;
+}
+
+.start {
+    background-color: red;
+}
