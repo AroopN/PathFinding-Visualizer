@@ -58,15 +58,15 @@
 }
 
 .cell {
-    width: 10px;
-    height: 10px;
-    border: 1px solid black;
+    width: 20px;
+    height: 20px;
+    border: 1px dotted rgb(224, 243, 243);
     padding: 0;
     float: left;
     /* fix for  buggy browsers */
     display: table-column;
     /* width: 200px; */
-    /* background-color: #ccc; */
+    background-color: rgb(255, 255, 255);
 }
 
 .table-row {
@@ -97,12 +97,32 @@
     cursor: pointer;
 }
 
+#clearPaths {
+    background-color: #ff0000;
+    color: white;
+    width: 100px;
+    height: 30px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
 .wall {
-    background-color: black;
+    background-color: rgb(102, 110, 123);
 }
 
 .seen {
-    background-color: cyan;
+    background-color: plum;
+    animation: mymove 1s 1;
+}
+
+@keyframes mymove {
+    from {
+        background-color:rgb(255, 88, 255);
+    }
+    to {
+        background-color: plum;
+    }
 }
 
 .isPath {

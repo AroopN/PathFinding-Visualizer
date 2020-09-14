@@ -7,18 +7,21 @@
         <title>PathFinder</title>
     </head>
     <body onload="loadTable()">
-        <div id="main"></div>
-        <div id ="button-container">
+        <div id="button-container">
             <div class="dropdown">
                 <button onclick="myFunction()" class="dropbtn">Visualize</button>
                 <div id="myDropdown" class="dropdown-content">
                     <button onclick="visualize('BFS');">BFS</a>
-                    <button onclick="visualize('DFS');">DFS</a>
-                    <button onclick="visualize('Bi-BFS');">Bi-BFS</a>
+                        <button onclick="visualize('DFS');">DFS</a>
+                            <button onclick="visualize('Bi-BFS');">Bi-BFS</a>
                 </div>
             </div>
-            <button id="clearTable" onclick="clearTable();">Clear</button>
+            <button id="clearPaths" onclick="clearTable();">Clear All</button>
+            <button id="clearTable" onclick="clearPaths();">Clear Paths</button>
+            <button id="generateMaze" onclick="generateMaze();">Generate Maze</button>
         </div>
+        <div id="main"></div>
+        
     </body>
 </html>
 

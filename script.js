@@ -1,17 +1,106 @@
 var startSet = 0;
 var endSet = 0;
-var isDown = false; // Tracks status of mouse button
-var nrows = 50;
-var ncols = 110;
+var isDown = false; 
+var nrows = 31;
+var ncols = 51;
+
+
+
+function generateMaze() {
+  clearTable();
+  let walls = [];
+    function maze(x, y) {
+      var n = x * y - 1;
+      if (n < 0) {
+        alert("illegal maze dimensions");
+        return;
+      }
+      var horiz = [];
+      for (var j = 0; j < x + 1; j++) (horiz[j] = []), (verti = []);
+      for (var j = 0; j < x + 1; j++)
+        (verti[j] = []),
+          (here = [
+            Math.floor(Math.random() * x),
+            Math.floor(Math.random() * y),
+          ]),
+          (path = [here]),
+          (unvisited = []);
+      for (var j = 0; j < x + 2; j++) {
+        unvisited[j] = [];
+        for (var k = 0; k < y + 1; k++)
+          unvisited[j].push(
+            j > 0 &&
+              j < x + 1 &&
+              k > 0 &&
+              (j != here[0] + 1 || k != here[1] + 1)
+          );
+      }
+      while (0 < n) {
+        var potential = [
+          [here[0] + 1, here[1]],
+          [here[0], here[1] + 1],
+          [here[0] - 1, here[1]],
+          [here[0], here[1] - 1],
+        ];
+        var neighbors = [];
+        for (var j = 0; j < 4; j++)
+          if (unvisited[potential[j][0] + 1][potential[j][1] + 1])
+            neighbors.push(potential[j]);
+        if (neighbors.length) {
+          n = n - 1;
+          next = neighbors[Math.floor(Math.random() * neighbors.length)];
+          unvisited[next[0] + 1][next[1] + 1] = false;
+          if (next[0] == here[0])
+            horiz[next[0]][(next[1] + here[1] - 1) / 2] = true;
+          else verti[(next[0] + here[0] - 1) / 2][next[1]] = true;
+          path.push((here = next));
+        } else here = path.pop();
+      }
+      return { x: x, y: y, horiz: horiz, verti: verti };
+    }
+    function display(m) {
+      for (var j = 0; j < m.x * 2 + 1; j++) {
+        if (0 == j % 2)
+          for (var k = 0; k < m.y * 2 + 1; k++){
+            let id = "#\\(" + j + "\\," + k + "\\)";
+            let cell = $(id);
+            
+            if (0 == k % 2) cell.attr("class", "cell wall");
+
+            else if (j > 0 && m.verti[j / 2 - 1][Math.floor(k / 2)])
+              cell.className == "cell";
+            else cell.attr("class", "cell wall");
+          }
+        else
+          for (var k = 0; k < m.y * 2 + 1; k++){
+            let id = "#\\(" + j + "\\," + k + "\\)";
+            let cell = $(id);
+            if (0 == k % 2)
+              if (k > 0 && m.horiz[(j - 1) / 2][k / 2 - 1]) cell.attr("class", "cell");
+              else cell.attr("class", "cell wall");
+            else cell.attr("class", "cell");
+          }
+        // text.push(line.join("") + "\r\n");
+      }
+      // return text.join("");
+    }
+    display(maze(Math.floor(nrows/2), Math.floor(ncols/2)));
+    console.log(walls.length);
+
+    for(var i=0;i<walls.length;i++){
+      walls[i].attr("class","cell wall");
+    }
+
+  }
 
 $(document)
   .mousedown(function () {
-    // console.log("mousedown");
-    isDown = true; // When mouse goes down, set isDown to true
+    
+    isDown = true; 
   })
   .mouseup(function () {
-    // console.log("mouseup");
-    isDown = false; // When mouse goes up, set isDown to false
+    
+    isDown = false; 
   });
 
 function checkDown(el) {
@@ -21,7 +110,7 @@ function checkDown(el) {
 }
 
 function loadTable() {
-  // alert(12);
+  
   var i;
   table = $("#main");
   for (i = 0; i < nrows; i++) {
@@ -43,7 +132,7 @@ function loadTable() {
 }
 
 function cellClick(cell) {
-  // alert("a");
+  
   if (startSet == cell.id) {
     startSet = 0;
     cell.className = "cell";
@@ -72,8 +161,24 @@ function cellClick(cell) {
 function clearTable() {
   startSet=0;
   endSet=0
+  clearInterval(Intervalid);
   $('#main').empty();
   loadTable();
+}
+function clearPaths() {
+  clearInterval(Intervalid);
+  for (i = 0; i < nrows; i++) {
+    for(j=0;j<ncols;j++){
+        id = "#\\(" + i + "\\," + j + "\\)";
+        cell = $(id);
+        
+        if (cell.hasClass("seen") || cell.hasClass("isPath")) {
+          cell.removeClass("seen");
+          cell.removeClass("isPath");
+          
+        }
+    }
+  }
 }
 let traverse = [];
 let curr =0;
@@ -96,7 +201,7 @@ function BFS(){
 
   while (q.length != 0 && found == false) {
     let curr = q.shift();
-    // console.log(curr);
+    
     curr_complete = curr;
     curr = curr.split(" ");
     curr = curr[curr.length - 1];
@@ -122,13 +227,14 @@ function BFS(){
       if (cell.attr("class") == "cell end") {
         found = true;
         path = curr_complete;
+        path = path.split(" ");
         break;
       }
       if (seen.indexOf(temp[0] + "," + temp[1]) == -1) {
         seen.push(temp[0] + "," + temp[1]);
         q.push(curr_complete + " " + temp[0] + "," + temp[1]);
         traverse.push(temp[0] + "," + temp[1]);
-        // cell.addClass("seen");
+        
       }
     }
   }
@@ -152,7 +258,7 @@ function DFS() {
 
   while (st.length != 0 && found == false) {
     let curr = st.pop();
-    // console.log(curr);
+    
     curr_complete = curr;
     curr = curr.split(" ");
     curr = curr[curr.length - 1];
@@ -177,15 +283,15 @@ function DFS() {
       }
       if (cell.attr("class") == "cell end") {
         found = true;
-        // console.log(curr_complete);
         path = curr_complete;
+        path = path.split(" ");
         break;
       }
       if (seen.indexOf(temp[0] + "," + temp[1]) == -1) {
         seen.push(temp[0] + "," + temp[1]);
         st.push(curr_complete + " " + temp[0] + "," + temp[1]);
         traverse.push(temp[0] + "," + temp[1]);
-        // cell.addClass("seen");
+        
       }
     }
   }
@@ -215,15 +321,23 @@ function BiBFS() {
   let seenFromEnd = [end];
   let seenFromStart = [start];
 
+  let pathFromStart = new Map();
+  let pathFromEnd = new Map();
+  
+
   let q1 = [start];
   let q2 = [end];
   var found = false;
 
   while (q1.length != 0 && found == false && q2.length != 0) {
-    // alert(traverse);
+    
     let curr = q1.shift();
-    let x = curr.split(",")[0];
-    let y = curr.split(",")[1];
+    curr_complete = curr;
+    curr = curr.split(" ");
+    curr = curr[curr.length - 1];
+    var x = curr.split(",")[0];
+    var y = curr.split(",")[1];
+    curr_str = curr;
     curr = [Number(x), Number(y)];
     var i = 0;
     for (i = 0; i < 4; i++) {
@@ -242,20 +356,47 @@ function BiBFS() {
       }
       if (seenFromStart.indexOf(temp[0] + "," + temp[1]) == -1) {
         seenFromStart.push(temp[0] + "," + temp[1]);
-        q1.push(temp[0] + "," + temp[1]);
+        q1.push(curr_complete + " " + temp[0] + "," + temp[1]);
+        pathFromStart.set(
+          temp[0] + "," + temp[1],
+          curr_complete + " " + temp[0] + "," + temp[1]
+        );
         traverse.push(temp[0] + "," + temp[1]);
-        // cell.addClass("seen");
+        
         if (seenFromEnd.indexOf(temp[0] + "," + temp[1]) != -1) {
-          // alert("bingo1");
+          
+          path = pathFromStart.get(temp[0] + "," + temp[1]);
+          path = path.concat(" ");
+          path = path.concat(pathFromEnd.get(temp[0] + "," + temp[1]));
           found = true;
+          path = path.split(" ");
+
+          newpath = [];
+          n = path.length;
+          i = 0;
+          j = n - 1;
+          while (i < j) {
+            newpath.push(path[j]);
+            j -= 1;
+            newpath.push(path[i]);
+            i += 1;
+          }
+          if (n % 2 != 0) newpath.push(path[i]);
+          path = newpath;
+          path.shift();
+
           break;
         }
       }
     }
 
     curr = q2.shift();
-    x = curr.split(",")[0];
-    y = curr.split(",")[1];
+    curr_complete = curr;
+    curr = curr.split(" ");
+    curr = curr[0];
+    var x = curr.split(",")[0];
+    var y = curr.split(",")[1];
+    curr_str = curr;
     curr = [Number(x), Number(y)];
     i = 0;
     for (i = 0; i < 4; i++) {
@@ -274,17 +415,41 @@ function BiBFS() {
       }
       if (seenFromEnd.indexOf(temp[0] + "," + temp[1]) == -1) {
         seenFromEnd.push(temp[0] + "," + temp[1]);
-        q2.push(temp[0] + "," + temp[1]);
+        q2.push(temp[0] + "," + temp[1]+" " +curr_complete);
+        pathFromEnd.set(
+          temp[0] + "," + temp[1],
+          curr_complete + " " + temp[0] + "," + temp[1]
+        );
         traverse.push(temp[0] + "," + temp[1]);
-        // cell.addClass("seen");
+        
         if (seenFromStart.indexOf(temp[0] + "," + temp[1]) != -1) {
-          // alert("bingo2");
+          
+          path = pathFromStart.get(temp[0] + "," + temp[1]);
+          path = path.concat(' ');
+          path = path.concat(pathFromEnd.get(temp[0] + "," + temp[1]));
           found = true;
+          path = path.split(" ");
+
+          newpath = [];
+          n = path.length;
+          i = 0;
+          j = n - 1;
+          while (i < j) {
+            newpath.push(path[j]);
+            j -= 1;
+            newpath.push(path[i]);
+            i += 1;
+          }
+          if (n % 2 != 0) newpath.push(path[i]);
+          path = newpath;
+          path.shift();
+
+
           break;
         }
       }
     }
-    // alert(q1.length + " " + found + " " + q2.length);
+    
   }
 }
 
@@ -296,7 +461,7 @@ function myFunction() {
   document.getElementById("myDropdown").classList.toggle("show");
 }
 
-// Close the dropdown menu if the user clicks outside of it
+
 window.onclick = function (event) {
   if (!event.target.matches(".dropbtn")) {
     var dropdowns = document.getElementsByClassName("dropdown-content");
@@ -326,63 +491,57 @@ window.onclick = function (event) {
 
 
 
-
-
 let Intervalid= 0;
 let speed=1;
 function animateTraversal(){
     let curr = traverse.shift();
-    // console.log(curr, traverse.length);
-    if(traverse.length==0){
-      clearInterval(Intervalid);
-      Intervalid = setInterval(animatePath, 10);
-    }
     var x = curr.split(",")[0];
     var y = curr.split(",")[1];
     curr = [Number(x), Number(y)];
     id = "#\\(" + curr[0] + "\\," + curr[1] + "\\)";
     cell = $(id);
     cell.addClass("seen");
-    speed=speed/10;
-
+    if (traverse.length == 0) {
+      clearInterval(Intervalid);
+      Intervalid = setInterval(animatePath, 100);
+    }
 
 }
 
 
 function animatePath(){
   let curr = path.shift();
+  console.log(curr);
   if (path.length == 0) {
     clearInterval(Intervalid);
   }
   var x = curr.split(",")[0];
   var y = curr.split(",")[1];
+  console.log(y)
   curr = [Number(x), Number(y)];
   id = "#\\(" + curr[0] + "\\," + curr[1] + "\\)";
+  console.log(id);
   cell = $(id);
   cell.addClass("isPath");
-  speed = speed / 10;
 
 }
 
-
+let isBi = false;
 
 
 
 function visualize(choice) {
+  clearPaths();
   traverse = [];
   if(choice=="BFS"){
     BFS();
-    console.log(path);
   }
   else if(choice=='DFS'){
     DFS();
   }
   else{
-    BFS();
-    traverse=[];
+    isBi=true;
     BiBFS();
   }
-  path = path.split(" ");
-  Intervalid = setInterval(animateTraversal, speed);
-   
+  Intervalid = setInterval(animateTraversal, 1);
 }
