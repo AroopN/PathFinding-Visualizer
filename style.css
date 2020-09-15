@@ -77,8 +77,7 @@
     margin: auto;
     display: table;
     width: auto;
-    background-color: #eee;
-    border: 1px solid #ff0000;
+    border: 1px solid rgb(224, 243, 243);
     /* border-spacing: 5px; */
     /* cellspacing:poor IE support for  this */
 }
@@ -112,27 +111,50 @@
 }
 
 .seen {
-    background-color: plum;
-    animation: mymove 1s 1;
+    background: url("plum_square.png");
+    animation: mymove 200ms 1;
 }
 
 @keyframes mymove {
     from {
-        background-color:rgb(255, 88, 255);
+        background: url("purple_square.png");
+        /* background-size: 0%; */
     }
     to {
-        background-color: plum;
+        background: url("plum_square.png");
+         /* background-size: 100%; */
     }
 }
 
 .isPath {
-    background-color: yellow;
+    background: url("yellow_square.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    animation-name: expandBackground;
+    animation-duration: 200ms;
 }
 
 .end {
-    background-color: green;
+    background: url("green_square.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    animation-name: expandBackground;
+    animation-duration: 200ms;
 }
 
 .start {
-    background-color: red;
+    background: url("red_square.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    animation-name: expandBackground;
+    animation-duration: 200ms;
+}
+
+@keyframes expandBackground {
+    from {
+        background-size: 0%;
+    }
+    to {
+        background-size: 100%;
+    }
 }
