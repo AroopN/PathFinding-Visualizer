@@ -1,57 +1,30 @@
-/* Dropdown Button */
-
-.dropbtn {
-    background-color: #3498DB;
-    color: white;
-    width: 100px;
-    height: 30px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-}
-
-/* Dropdown button on hover & focus */
-
-.dropbtn:hover, .dropbtn:focus {
-    background-color: #2980B9;
-}
-
-/* The container <div> - needed to position the dropdown content */
-
 .dropdown {
     position: relative;
     display: inline-block;
 }
 
-/* Dropdown Content (Hidden by Default) */
-
 .dropdown-content {
     display: none;
     position: absolute;
     background-color: #f1f1f1;
-    min-width: 100px;
+    min-width: 100%;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
 
-/* Links inside the dropdown */
-
 .dropdown-content button {
     color: black;
-    /* padding: 12px 16px; */
-    width: 100px;
-    height: 30px;
+    padding: 12px 16px;
+    min-width: 100%;
+    /* height: 30px; */
+    background-color: rgb(240, 255, 240);
     text-decoration: none;
     display: block;
 }
 
-/* Change color of dropdown links on hover */
-
 .dropdown-content button:hover {
     background-color: #ddd
 }
-
-/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 
 .show {
     display: block;
@@ -63,9 +36,7 @@
     border: 1px dotted rgb(224, 243, 243);
     padding: 0;
     float: left;
-    /* fix for  buggy browsers */
     display: table-column;
-    /* width: 200px; */
     background-color: rgb(255, 255, 255);
 }
 
@@ -78,51 +49,31 @@
     display: table;
     width: auto;
     border: 1px solid rgb(224, 243, 243);
-    /* border-spacing: 5px; */
-    /* cellspacing:poor IE support for  this */
 }
 
 #button-container {
     text-align: center;
 }
 
-#clearTable {
-    background-color: #ff0000;
-    color: white;
-    width: 100px;
-    height: 30px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-}
-
-#clearPaths {
-    background-color: #ff0000;
-    color: white;
-    width: 100px;
-    height: 30px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-}
-
 .wall {
     background-color: rgb(102, 110, 123);
+    background-position: center;
 }
 
 .seen {
     background: url("plum_square.png");
     animation: mymove 200ms 1;
+    background-position: center;
 }
 
 @keyframes mymove {
     from {
+        background-size: 0%;
         background: url("purple_square.png");
-        /* background-size: 0%; */
     }
     to {
+        background-size: 100%;
         background: url("plum_square.png");
-         /* background-size: 100%; */
     }
 }
 
@@ -130,6 +81,7 @@
     background: url("yellow_square.png");
     background-repeat: no-repeat;
     background-size: 100%;
+    background-position: center;
     animation-name: expandBackground;
     animation-duration: 200ms;
 }
@@ -138,6 +90,7 @@
     background: url("green_square.png");
     background-repeat: no-repeat;
     background-size: 100%;
+    background-position: center;
     animation-name: expandBackground;
     animation-duration: 200ms;
 }
@@ -146,6 +99,7 @@
     background: url("red_square.png");
     background-repeat: no-repeat;
     background-size: 100%;
+    background-position: center;
     animation-name: expandBackground;
     animation-duration: 200ms;
 }
@@ -157,4 +111,21 @@
     to {
         background-size: 100%;
     }
+}
+
+.button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.clear {
+    background-color: rgb(255, 100, 100);
 }

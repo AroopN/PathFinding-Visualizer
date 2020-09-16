@@ -9,16 +9,16 @@
     <body onload="loadTable()">
         <div id="button-container">
             <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn">Visualize</button>
+                <button onclick="myFunction()" class="button dropbtn">Visualize</button>
                 <div id="myDropdown" class="dropdown-content">
                     <button onclick="visualize('BFS');">BFS</a>
                         <button onclick="visualize('DFS');">DFS</a>
                             <button onclick="visualize('Bi-BFS');">Bi-BFS</a>
                 </div>
             </div>
-            <button id="clearPaths" onclick="clearTable();">Clear All</button>
-            <button id="clearTable" onclick="clearPaths();">Clear Paths</button>
-            <button id="generateMaze" onclick="generateMaze();">Generate Maze</button>
+            <button id="generateMaze" class="button" onclick="generateMaze();">Generate Maze</button>
+            <button id="clearPaths" class="button clear" onclick="clearTable();">Clear All</button>
+            <button id="clearTable" class="button clear" onclick="clearPaths();">Clear Paths</button>
         </div>
         <div id="main"></div>
         
